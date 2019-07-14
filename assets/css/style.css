@@ -14,3 +14,12 @@
     color: #FFF; 
 
 }
+
+.table{
+    width: 120px;
+    margin: 0 auto;}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
