@@ -18,20 +18,53 @@ $(document).ready(function () {
     $("#uploadTrainInfo").on("click", function (event) {
         event.preventDefault();
 
-        var trnName = $("#trainName").val().trim();
+        var trainName = $("#trainName").val().trim();
         var destination = $("#destination").val().trim();
         var firstTrain = $("#firsttrain").val().trim();
         var frequency = $("#frequency").val().trim();
 
         database.ref().push({
-            trainName: trnName,
+            trainName: trainName,
             destination: destination,
             firstTrain: firstTrain,
             frequency: frequency
 
         });
-
-
     });
+
+    database.ref().on("child_added", function (childSnapshot) {
+
+        var departingTrain = childSnapshot.val().trainName;
+        var finalDestination = childSnapshot.val().destination;
+        var initialTrain = childSnapshot.val().firstTrain;
+        var updatedFrequency = childSnapshot.val().frequency;
+
+        var departingTime = moment(initialTrain, "hh:mm").subtract(1, "years");
+
+        var currentTime = moment();
+
+        var timeDifference = moment().diff(moment(departingTime), "minutes");
+
+        var timeRemainder = timeDifference % updatedFrequency;
+
+        var minutesForTrain = newFreq - timeRemainder;
+
+        var departingTrain = moment().add(minutesForTrain, "minutes");
+        var nextArrival = moment(nextTrain).format("HH:mm");
+
+        $("#upload-content").append(
+            ' <tr><td>' + departingTrain +
+            ' </td><td>' + finalDestination +
+            ' </td><td>' + updatedFrequency +
+            ' </td><td>' + nextArrival +
+            ' </td><td>' + minutesForTrain + ' </td></tr>');
+
+        $("#trName, #destination, #firsttrain, #frequency").val("");
+        return false;
+
+    },
+        function (errorObject) {
+            console.log("Errors handled: " + errorObject.code);
+        });
 
 });
