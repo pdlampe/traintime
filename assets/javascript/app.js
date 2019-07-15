@@ -19,13 +19,13 @@ $(document).ready(function () {
         event.preventDefault();
 
         var trainName = $("#trainName").val().trim();
-        var destination = $("#destination").val().trim();
+        var place = $("#place").val().trim();
         var firstTrain = $("#firsttrain").val().trim();
         var frequency = $("#frequency").val().trim();
 
         database.ref().push({
             trainName: trainName,
-            destination: destination,
+            place: place,
             firstTrain: firstTrain,
             frequency: frequency
 
@@ -35,7 +35,7 @@ $(document).ready(function () {
     database.ref().on("child_added", function (childSnapshot) {
 
         var departingTrain = childSnapshot.val().trainName;
-        var finalDestination = childSnapshot.val().destination;
+        var finalDestination = childSnapshot.val().place;
         var initialTrain = childSnapshot.val().firstTrain;
         var updatedFrequency = childSnapshot.val().frequency;
 
@@ -59,7 +59,7 @@ $(document).ready(function () {
             ' </td><td>' + nextArrival +
             ' </td><td>' + minutesForTrain + ' </td></tr>');
 
-        $("#trName, #destination, #firsttrain, #frequency").val("");
+        $("#trName, #place, #firsttrain, #frequency").val("");
         return false;
 
     },
