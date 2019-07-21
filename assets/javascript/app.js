@@ -1,14 +1,15 @@
 $(document).ready(function () {
 
     // Your web app's Firebase configuration
+
     var firebaseConfig = {
-        apiKey: "AIzaSyBfbOF3MhIMXZ5FCemed2gL7GajCvi7gNU",
-        authDomain: "traintime-f34c0.firebaseapp.com",
-        databaseURL: "https://traintime-f34c0.firebaseio.com",
-        projectId: "traintime-f34c0",
-        storageBucket: "",
-        messagingSenderId: "963914657009",
-        appId: "1:963914657009:web:58318cb218df4adb"
+        apiKey: "AIzaSyAHb7ehZrVdZg2TDhgJF_qPR7OOuSKc06g",
+        authDomain: "trainstation-78d6f.firebaseapp.com",
+        databaseURL: "https://trainstation-78d6f.firebaseio.com",
+        projectId: "trainstation-78d6f",
+        storageBucket: "trainstation-78d6f.appspot.com",
+        messagingSenderId: "598311122100",
+        appId: "1:598311122100:web:ea3ec23f6659c6cc"
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -41,16 +42,16 @@ $(document).ready(function () {
 
         var departingTime = moment(initialTrain, "hh:mm").subtract(1, "years");
 
-        var currentTime = moment();
-
         var timeDifference = moment().diff(moment(departingTime), "minutes");
 
         var timeRemainder = timeDifference % updatedFrequency;
 
-        var minutesForTrain = newFreq - timeRemainder;
+        var minutesForTrain = updatedFrequency - timeRemainder;
 
-        var departingTrain = moment().add(minutesForTrain, "minutes");
-        var nextArrival = moment(nextTrain).format("HH:mm");
+        var leavingTrain = moment().add(minutesForTrain, "minutes");
+
+        var nextArrival = moment(leavingTrain).format("HH:mm");
+
 
         $("#upload-content").append(
             ' <tr><td>' + departingTrain +
@@ -59,9 +60,8 @@ $(document).ready(function () {
             ' </td><td>' + nextArrival +
             ' </td><td>' + minutesForTrain + ' </td></tr>');
 
-        $("#trName, #place, #firsttrain, #frequency").val("");
+        $("#trainName, #place, #firsttrain, #frequency").val("");
         return false;
-
     },
         function (errorObject) {
             console.log("Errors handled: " + errorObject.code);
